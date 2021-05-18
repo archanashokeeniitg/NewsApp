@@ -42,6 +42,8 @@ class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
 
         var job: Job? = null
 
+        // var ash: Job? = null
+
         btnSearch.setOnClickListener {
             job?.cancel()
             job = MainScope().launch {
@@ -49,6 +51,7 @@ class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
                 if (etSearch.text.toString() != "") {
                     viewModel.searchNews(etSearch.text.toString())
                 }
+                
             }
         }
 
@@ -60,12 +63,24 @@ class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
                         newsAdapter.differ.submitList(newsResponse.articles)
                     }
                 }
-                is Resource.Error -> {
+                // is Resource.Error -> {
+                //     hideProgressBar()
+                //     response.message?.let { message ->
+                //         Log.e(TAG, "An error occurred: $message")
+                //     }
+                // }
+                 is Resource.Error -> {
                     hideProgressBar()
                     response.message?.let { message ->
                         Log.e(TAG, "An error occurred: $message")
                     }
                 }
+                //  is Resource.Error -> {
+                //     hideProgressBar()
+                //     response.message?.let { message ->
+                //         Log.e(TAG, "An error occurred: $message")
+                //     }
+                // }
                 is Resource.Loading -> {
                     showProgressBar()
                 }
