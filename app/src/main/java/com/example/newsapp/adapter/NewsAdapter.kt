@@ -7,16 +7,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.newsapp.R
 import com.example.newsapp.models.Article
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_article_preview.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-class NewsAdapter : RecyclerView.Adapter<NewsAdapter.ArticleViewHolder>() {
-
-    inner class ArticleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+class NewsAdapter : RecyclerView.Adapter<NewsAdapter.ViewHolder>() {
 
     private val differCallback = object : DiffUtil.ItemCallback<Article>() {
         override fun areItemsTheSame(oldItem: Article, newItem: Article): Boolean {
@@ -30,28 +28,26 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.ArticleViewHolder>() {
 
     val differ = AsyncListDiffer(this, differCallback)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticleViewHolder {
-        return ArticleViewHolder(
-            LayoutInflater.from(parent.context).inflate(
-                R.layout.item_article_preview,
-                parent,
-                false
-            )
-        )
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): ViewHolder {
+        val view: View = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_article_preview, parent, false)
+        return ViewHolder(view)
     }
 
     override fun getItemCount(): Int {
         return differ.currentList.size
     }
 
-    override fun onBindViewHolder(holder: ArticleViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val article = differ.currentList[position]
         holder.itemView.apply {
-            Glide.with(this).load(article.urlToImage).into(ivArticleImage)
+            Picasso.with(context).load(article.urlToImage).into(ivArticleImage)
             tvSource.text = article.source?.name
             tvTitle.text = article.title
-            tvDescription.text = article.description
-            tvPublishedAt.text = article.publishedAt?.let { unixTime(it) }
+            tvDate.text = article.publishedAt?.let { unixTime(it) }
             setOnClickListener {
                 onItemClickListener?.let { it(article) }
             }
@@ -71,6 +67,8 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.ArticleViewHolder>() {
         sdf.timeZone = TimeZone.getDefault()
         return sdf.format(date)
     }
+
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 }
 
 
