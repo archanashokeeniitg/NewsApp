@@ -59,6 +59,20 @@ class SavedNewsFragment : Fragment(R.layout.fragment_saved_news) {
             }
         }
 
+        
+
+        //  override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+        //         val position = viewHolder.adapterPosition
+        //         val article = newsAdapter.differ.currentList[position]
+        //         viewModel.deleteArticle(article)
+        //         Snackbar.make(view, "Successfully deleted article", Snackbar.LENGTH_LONG).apply {
+        //             setAction("Undo") {
+        //                 viewModel.saveArticle(article)
+        //             }
+        //             show()
+        //         }
+        //     }
+
         ItemTouchHelper(itemTouchHelperCallback).apply {
             attachToRecyclerView(rvSavedNews)
         }
@@ -71,7 +85,9 @@ class SavedNewsFragment : Fragment(R.layout.fragment_saved_news) {
     private fun setupRecyclerView() {
         newsAdapter = NewsAdapter()
         rvSavedNews.apply {
-            adapter = newsAdapter
+            // adapter = newsAdapter
+            // layoutManager = LinearLayoutManager(activity)
+             adapter = newsAdapter
             layoutManager = LinearLayoutManager(activity)
         }
     }
